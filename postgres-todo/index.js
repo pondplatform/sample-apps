@@ -6,11 +6,14 @@ import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
 import dotenv from 'dotenv';
-
-const app = express();
-const port = process.env.PORT || 3000; // Use the PORT provided by the environment or default to 3000
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
 dotenv.config();
+
+const app = express();
+const port = process.env.PORT || 3000;
 
 /*
 const db = new pg.Client({
@@ -30,7 +33,12 @@ const db = new pg.Client({
   password: String(process.env.DB_PASSWORD), // Convert to string
   port: process.env.DB_PORT,
 });
-db.connect();
+await db.connect();
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const migration = readFileSync(join(__dirname, 'queries.sql'), 'utf8');
+await db.query(migration);
+console.log('Migration applied.');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
