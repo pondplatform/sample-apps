@@ -1,7 +1,7 @@
 version: 1
 name: todo-app
 build: Dockerfile
-image: ghcr.io/janmh/todo-app
+image: ghcr.io/pondplatform/sample-postgres-todo
 
 ingress:
   enabled: true
@@ -20,7 +20,7 @@ env:
 configs:
   .env:
     format: .env
-    mountDir: /usr/src/app/
+    mountPath: /usr/src/app/.env
     values:
       DB_HOST: "{{myDb.host}}"
       DB_USER: "{{myDb.username}}"
